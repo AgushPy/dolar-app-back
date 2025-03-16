@@ -1,5 +1,9 @@
 import puppeteer from 'puppeteer';
 import { Dolar } from '../models/Dolar';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 const URL = 'https://www.ambito.com/contenidos/dolar-informal.html';
 
@@ -13,6 +17,7 @@ declare global {
 export const getAmbitoFinanciero = async () => {
   try {
     const browser = await puppeteer.launch({
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
       headless: true,
       args: [ '--no-sandbox', '--disable-setuid-sandbox' ]
     });

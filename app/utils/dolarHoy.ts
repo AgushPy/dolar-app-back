@@ -1,11 +1,16 @@
 import puppeteer from 'puppeteer';
 import { Dolar } from '../models/Dolar';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 const URL = 'https://dolarhoy.com/';
 
 export const getDolarHoy = async () => {
   try {
     const browser = await puppeteer.launch( {
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
       headless: true,
       args: [ '--no-sandbox', '--disable-setuid-sandbox' ]
     } );

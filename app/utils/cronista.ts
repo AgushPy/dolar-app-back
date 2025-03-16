@@ -1,11 +1,16 @@
 import puppeteer from 'puppeteer';
 import { Dolar } from '../models/Dolar';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 const URL = 'https://www.cronista.com/MercadosOnline/moneda.html?id=ARSB';
 
 export const getCronista = async() => {
   try{
     const browser = await puppeteer.launch({
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
       headless: true,
       args: [ '--no-sandbox', '--disable-setuid-sandbox' ]
     });

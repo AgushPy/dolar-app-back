@@ -15,10 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDolarHoy = void 0;
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const Dolar_1 = require("../models/Dolar");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const URL = 'https://dolarhoy.com/';
 const getDolarHoy = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const browser = yield puppeteer_1.default.launch({
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
             headless: true,
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
