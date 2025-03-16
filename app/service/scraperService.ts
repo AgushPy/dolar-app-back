@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { redisClient } from '..';
 import { Dolar } from '../models/Dolar';
 import { getAmbitoFinanciero } from '../utils/ambitoFinanciero';
 import { getCronista } from '../utils/cronista';
 import { getDolarHoy } from '../utils/dolarHoy';
 import cron from 'node-cron';
+import { Request, Response } from 'express';
 
 // Función que hace scraping del valor del dólar blue
-export const getDolarBlueValues = async () => {
+export const getDolarBlueValues = async (req : Request, res: Response) => {
 
   const informationCurrency = new Array<Dolar>;
 
@@ -16,15 +16,17 @@ export const getDolarBlueValues = async () => {
   const dolarOfCronista: Dolar = await getCronista();
   informationCurrency.push( dolarOfDolarHoy, dolarOfAmbitoFinanciero, dolarOfCronista );
 
-  const saveResultRedis = await redisClient.set( 'infoDolars', JSON.stringify( informationCurrency ), { EX: 60 } );
-  console.log( 'Data saved success' );
+  if(req.redisClient){
+    const saveResultRedis = await req.redisClient.set( 'infoDolars', JSON.stringify( informationCurrency ), { EX: 60 } );
+    console.log( 'Data saved success' );
+  }
 
   return informationCurrency;
 };
 
-export const getDolarAverage = async ( dolars: Array<Dolar> ) => {
+export const getDolarAverage = async (req : Request, res: Response , dolars: Array<Dolar> ) => {
   if ( !dolars.length ) {
-    dolars = await getDolarBlueValues();
+    dolars = await getDolarBlueValues(req, res);
   }
 
   let averageBuyPrice : number = 0;
@@ -45,9 +47,9 @@ export const getDolarAverage = async ( dolars: Array<Dolar> ) => {
   }
 };
 
-export const getDolarSlippage = async (dolars: Array<Dolar>) => {
+export const getDolarSlippage = async ( req : Request, res: Response , dolars: Array<Dolar>) => {
   if ( !dolars.length ) {
-    dolars = await getDolarBlueValues();
+    dolars = await getDolarBlueValues(req, res);
   }
 
   return dolars.map( dolar =>{

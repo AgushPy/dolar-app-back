@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { redisClient } from '..';
 import { Dolar } from '../models/Dolar';
 import { getDolarAverage, getDolarBlueValues, getDolarSlippage } from '../service/scraperService';
 
@@ -9,15 +8,19 @@ import { getDolarAverage, getDolarBlueValues, getDolarSlippage } from '../servic
 export const getDolarBlue = async ( req: Request, res: Response ) => {
   try {
 
-    const getResultDolars = await redisClient.get( 'infoDolars' );
+    if ( req.redisClient ) {
+      const getResultDolars = await req.redisClient.get( 'infoDolars' );
 
-    if ( getResultDolars ) {
-      res.json( JSON.parse(getResultDolars) );
-      return;
+      console.log('El resultado de redis fue',getResultDolars)
+      if ( getResultDolars ) {
+        res.json( JSON.parse( getResultDolars ) );
+        return;
+      }
+
     }
 
     // Llamada al servicio de scraping para obtener el valor del dólar
-    const dolarValue: Dolar[] = await getDolarBlueValues();
+    const dolarValue: Dolar[] = await getDolarBlueValues(req, res);
     res.json( dolarValue );
     return;
   } catch ( error ) {
@@ -28,24 +31,35 @@ export const getDolarBlue = async ( req: Request, res: Response ) => {
 
 export const getAverage = async ( req: Request, res: Response ) => {
   try {
-    const getResultDolars : Dolar[] = JSON.parse(await redisClient.get( 'infoDolars' ) || '{}');
+    let getResultDolars: Dolar[];
+    if ( req.redisClient ) {
+      getResultDolars = JSON.parse( await req.redisClient.get( 'infoDolars' ) || '{}' );
+    } else {
+      getResultDolars = await getDolarBlueValues(req, res);
+    }
 
-    const average = await getDolarAverage(getResultDolars);
+    const average = await getDolarAverage( req, res, getResultDolars );
 
     res.json( average );
-  }catch(err){
+  } catch ( err ) {
     res.status( 500 ).json( { error: 'Error to get average usd' } );
   }
 };
 
 export const getSlippage = async ( req: Request, res: Response ) => {
   try {
-    const getResultDolars : Dolar[] = JSON.parse(await redisClient.get( 'infoDolars' ) || '{}');
+    let getResultDolars: Dolar[];
+    if ( req.redisClient ) {
+      getResultDolars = JSON.parse( await req.redisClient.get( 'infoDolars' ) || '{}' );
+    }
+    else {
+      getResultDolars = await getDolarBlueValues(req, res);
+    }
 
-    const slippage = await getDolarSlippage(getResultDolars);
+    const slippage = await getDolarSlippage( req, res , getResultDolars );
 
     res.json( slippage );
-  }catch(err){
+  } catch ( err ) {
     res.status( 500 ).json( { error: 'Error to get average usd' } );
   }
 };
