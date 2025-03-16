@@ -16,16 +16,17 @@ const scraperRoutes = createScraperRoutes();
 // Rutas del scraper
 app.use( '/api/scrape', scraperRoutes );
 
-// Iniciar servidor
-const PORT = process.env.PORT || 3000;
-
 redisClient.connect().then( () => {
   console.log('Redis ready for cache storage');
 } );
 
-app.listen( PORT, () => {
-  console.log( `Servidor corriendo en el puerto ${ PORT }` );
-} );
-
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen( PORT, () => {
+    console.log( `Servidor corriendo en el puerto ${ PORT }` );
+  } );
+}
 
 export { redisClient };
+
+export default app;
