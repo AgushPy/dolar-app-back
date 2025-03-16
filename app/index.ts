@@ -1,21 +1,13 @@
 import express from 'express';
-import { createClient } from 'redis';
 import createScraperRoutes from './routes/scraperRoutes';
 import './cronJob';
-import { redisMiddleware } from './middleware/redisMiddleware';
 
 const app = express();
 
-
-
-// Middleware
 app.use( express.json() );
 
 const scraperRoutes = createScraperRoutes();
 
-
-
-// Rutas del scraper
 app.use( '/api/scrape', scraperRoutes );
 
 app.get( '/health', ( req, res ) => {
@@ -23,7 +15,6 @@ app.get( '/health', ( req, res ) => {
     message: 'Server on'
   } );
 } );
-
 
 
 if ( process.env.NODE_ENV !== 'production' ) {
