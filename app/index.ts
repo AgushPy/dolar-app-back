@@ -2,6 +2,7 @@ import express from 'express';
 import createScraperRoutes from './routes/scraperRoutes';
 import './cronJob';
 
+
 const app = express();
 
 app.use( express.json() );

@@ -8,13 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getRedisClient = getRedisClient;
 exports.redisMiddleware = redisMiddleware;
 const redis_1 = require("redis");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 function getRedisClient() {
     return __awaiter(this, void 0, void 0, function* () {
-        const redisClient = (0, redis_1.createClient)({ url: process.env.REDIS_CLIENT });
+        const redisClient = (0, redis_1.createClient)({
+            username: process.env.REDIS_USER || '',
+            password: process.env.REDIS_PASSWORD || '',
+            socket: {
+                host: process.env.REDIS_CLIENT || 'localhost',
+                port: Number(process.env.REDIS_PORT) || 6379
+            }
+        });
         redisClient.on('error', err => console.log('Redis Client Error', err));
         yield redisClient.connect();
         console.log('Redis ready for cache storage');
