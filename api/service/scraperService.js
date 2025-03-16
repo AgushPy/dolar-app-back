@@ -15,17 +15,14 @@ const cronista_1 = require("../utils/cronista");
 const dolarHoy_1 = require("../utils/dolarHoy");
 // Función que hace scraping del valor del dólar blue
 const getDolarBlueValues = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const informationCurrency = yield Promise.all([
-        (0, dolarHoy_1.getDolarHoy)(),
-        (0, ambitoFinanciero_1.getAmbitoFinanciero)(),
-        (0, cronista_1.getCronista)()
-    ]);
-    console.log(informationCurrency);
+    const dolarHoy = yield (0, dolarHoy_1.getDolarHoy)();
+    const ambitoFinanciero = yield (0, ambitoFinanciero_1.getAmbitoFinanciero)();
+    const cronista = yield (0, cronista_1.getCronista)();
     if (req.redisClient) {
-        const saveResultRedis = yield req.redisClient.set('infoDolars', JSON.stringify(informationCurrency), { EX: 60 });
+        const saveResultRedis = yield req.redisClient.set('infoDolars', JSON.stringify([dolarHoy, ambitoFinanciero, cronista]), { EX: 60 });
         console.log('Data saved success');
     }
-    return informationCurrency;
+    return [dolarHoy, ambitoFinanciero, cronista];
 });
 exports.getDolarBlueValues = getDolarBlueValues;
 const getDolarAverage = (req, res, dolars) => __awaiter(void 0, void 0, void 0, function* () {
