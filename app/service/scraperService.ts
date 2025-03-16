@@ -9,12 +9,12 @@ import { Request, Response } from 'express';
 // Función que hace scraping del valor del dólar blue
 export const getDolarBlueValues = async (req : Request, res: Response) => {
 
-  const informationCurrency = new Array<Dolar>;
 
-  const dolarOfDolarHoy: Dolar = await getDolarHoy();
-  const dolarOfAmbitoFinanciero: Dolar = await getAmbitoFinanciero();
-  const dolarOfCronista: Dolar = await getCronista();
-  informationCurrency.push( dolarOfDolarHoy, dolarOfAmbitoFinanciero, dolarOfCronista );
+  const informationCurrency = Promise.all([
+    await getDolarHoy(),
+    await getAmbitoFinanciero(),
+    await getCronista()
+  ])
 
   console.log(informationCurrency)
   if(req.redisClient){
