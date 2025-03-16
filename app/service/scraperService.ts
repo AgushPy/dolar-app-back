@@ -16,6 +16,7 @@ export const getDolarBlueValues = async (req : Request, res: Response) => {
   const dolarOfCronista: Dolar = await getCronista();
   informationCurrency.push( dolarOfDolarHoy, dolarOfAmbitoFinanciero, dolarOfCronista );
 
+  console.log(informationCurrency)
   if(req.redisClient){
     const saveResultRedis = await req.redisClient.set( 'infoDolars', JSON.stringify( informationCurrency ), { EX: 60 } );
     console.log( 'Data saved success' );

@@ -20,6 +20,7 @@ const getDolarBlueValues = (req, res) => __awaiter(void 0, void 0, void 0, funct
     const dolarOfAmbitoFinanciero = yield (0, ambitoFinanciero_1.getAmbitoFinanciero)();
     const dolarOfCronista = yield (0, cronista_1.getCronista)();
     informationCurrency.push(dolarOfDolarHoy, dolarOfAmbitoFinanciero, dolarOfCronista);
+    console.log(informationCurrency);
     if (req.redisClient) {
         const saveResultRedis = yield req.redisClient.set('infoDolars', JSON.stringify(informationCurrency), { EX: 60 });
         console.log('Data saved success');
