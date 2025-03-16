@@ -15,10 +15,10 @@ const cronista_1 = require("../utils/cronista");
 const dolarHoy_1 = require("../utils/dolarHoy");
 // Función que hace scraping del valor del dólar blue
 const getDolarBlueValues = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const informationCurrency = Promise.all([
-        yield (0, dolarHoy_1.getDolarHoy)(),
-        yield (0, ambitoFinanciero_1.getAmbitoFinanciero)(),
-        yield (0, cronista_1.getCronista)()
+    const informationCurrency = yield Promise.all([
+        (0, dolarHoy_1.getDolarHoy)(),
+        (0, ambitoFinanciero_1.getAmbitoFinanciero)(),
+        (0, cronista_1.getCronista)()
     ]);
     console.log(informationCurrency);
     if (req.redisClient) {

@@ -10,10 +10,10 @@ import { Request, Response } from 'express';
 export const getDolarBlueValues = async (req : Request, res: Response) => {
 
 
-  const informationCurrency = Promise.all([
-    await getDolarHoy(),
-    await getAmbitoFinanciero(),
-    await getCronista()
+  const informationCurrency = await Promise.all([
+    getDolarHoy(),
+    getAmbitoFinanciero(),
+    getCronista()
   ])
 
   console.log(informationCurrency)
