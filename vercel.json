@@ -5,5 +5,9 @@
   ],
   "routes": [
     { "src": "/app/(.*)", "dest": "dist/index.js" }
-  ]
+  ],
+  "crons": [{
+    "path": "/api/cronJob",
+    "schedule": "*45 * * * * *"
+  }]
 }
