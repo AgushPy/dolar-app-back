@@ -18,7 +18,10 @@ const Dolar_1 = require("../models/Dolar");
 const URL = 'https://www.cronista.com/MercadosOnline/moneda.html?id=ARSB';
 const getCronista = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const browser = yield puppeteer_1.default.launch();
+        const browser = yield puppeteer_1.default.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
         const page = yield browser.newPage();
         yield page.goto(URL, { waitUntil: 'domcontentloaded' });
         const content = yield page.content();

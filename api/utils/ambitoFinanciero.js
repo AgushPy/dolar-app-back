@@ -18,7 +18,10 @@ const Dolar_1 = require("../models/Dolar");
 const URL = 'https://www.ambito.com/contenidos/dolar-informal.html';
 const getAmbitoFinanciero = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const browser = yield puppeteer_1.default.launch();
+        const browser = yield puppeteer_1.default.launch({
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+        });
         const page = yield browser.newPage();
         yield page.goto(URL, { waitUntil: 'domcontentloaded' });
         yield page.waitForFunction(() => window.jQuery !== undefined);

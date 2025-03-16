@@ -3,7 +3,6 @@ import { Dolar } from '../models/Dolar';
 import { getAmbitoFinanciero } from '../utils/ambitoFinanciero';
 import { getCronista } from '../utils/cronista';
 import { getDolarHoy } from '../utils/dolarHoy';
-import cron from 'node-cron';
 import { Request, Response } from 'express';
 
 // Función que hace scraping del valor del dólar blue
