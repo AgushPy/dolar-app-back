@@ -16,7 +16,7 @@ const scraperRoutes = createScraperRoutes();
 // Rutas del scraper
 app.use( '/api/scrape', scraperRoutes );
 
-app.get('healt', (req,res)=> {
+app.get('/health', (req,res)=> {
   res.status(200).json({
     message: 'Server on'
   })
