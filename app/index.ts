@@ -16,6 +16,12 @@ const scraperRoutes = createScraperRoutes();
 // Rutas del scraper
 app.use( '/api/scrape', scraperRoutes );
 
+app.get('healt', (req,res)=> {
+  res.status(200).json({
+    message: 'Server on'
+  })
+})
+
 redisClient.connect().then( () => {
   console.log('Redis ready for cache storage');
 } );
