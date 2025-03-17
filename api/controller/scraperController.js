@@ -18,15 +18,7 @@ const getDolarBlue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             const getResultDolars = yield req.redisClient.get('infoDolars');
             console.log('El resultado de redis fue', getResultDolars);
             if (getResultDolars) {
-                const parsedResult = JSON.parse(getResultDolars);
-                if (Array.isArray(parsedResult) && parsedResult.every(item => Object.keys(item).length === 0)) {
-                    console.log('Redis devolvió objetos vacíos, realizando scraping');
-                    // Realiza el scraping si los objetos están vacíos
-                    const dolarValue = yield (0, scraperService_1.getDolarBlueValues)(req, res);
-                    res.json(dolarValue);
-                    return;
-                }
-                res.json(JSON.parse(parsedResult));
+                res.json(JSON.parse(getResultDolars));
                 return;
             }
         }
