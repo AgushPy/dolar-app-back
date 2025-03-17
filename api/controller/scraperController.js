@@ -18,6 +18,7 @@ const getDolarBlue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             const getResultDolars = yield req.redisClient.get('infoDolars');
             console.log('El resultado de redis fue', getResultDolars);
             if (getResultDolars) {
+                req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
                 res.json(JSON.parse(getResultDolars));
                 return;
             }

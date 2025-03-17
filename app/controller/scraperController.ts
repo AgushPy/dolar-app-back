@@ -12,7 +12,9 @@ export const getDolarBlue = async ( req: Request, res: Response ) => {
       console.log('El resultado de redis fue',getResultDolars)
       if ( getResultDolars ) {
 
+        req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
         res.json( JSON.parse( getResultDolars ) );
+
         return;
       }
 
