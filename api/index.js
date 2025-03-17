@@ -6,9 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const scraperRoutes_1 = __importDefault(require("./routes/scraperRoutes"));
 require("./cronJob");
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 const scraperRoutes = (0, scraperRoutes_1.default)();
+const corsOptions = {
+    origin: 'https://dolar-app-front.vercel.app', // Permitir solo este dominio
+    methods: ['GET', 'POST'], // Permitir solo ciertos métodos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Permitir ciertos encabezados
+};
+app.use((0, cors_1.default)(corsOptions));
 app.use('/api/scrape', scraperRoutes);
 app.get('/health', (req, res) => {
     res.status(200).json({

@@ -1,13 +1,21 @@
 import express from 'express';
 import createScraperRoutes from './routes/scraperRoutes';
 import './cronJob';
-
+import cors from 'cors';
 
 const app = express();
 
 app.use( express.json() );
 
 const scraperRoutes = createScraperRoutes();
+
+const corsOptions = {
+  origin: 'https://dolar-app-front.vercel.app',  // Permitir solo este dominio
+  methods: ['GET', 'POST'],         // Permitir solo ciertos métodos
+  allowedHeaders: ['Content-Type', 'Authorization'], // Permitir ciertos encabezados
+};
+
+app.use(cors(corsOptions));
 
 app.use( '/api/scrape', scraperRoutes );
 
