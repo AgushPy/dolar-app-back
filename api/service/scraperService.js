@@ -19,7 +19,6 @@ const getDolarBlueValues = (req, res) => __awaiter(void 0, void 0, void 0, funct
     const ambitoFinanciero = yield (0, ambitoFinanciero_1.getAmbitoFinanciero)();
     const cronista = yield (0, cronista_1.getCronista)();
     if (req.redisClient) {
-        yield req.redisClient.connect();
         yield req.redisClient.set('infoDolars', JSON.stringify([dolarHoy, ambitoFinanciero, cronista]), { EX: 60 });
         yield req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
         console.log('Data saved success');
