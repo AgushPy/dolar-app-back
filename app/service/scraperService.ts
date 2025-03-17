@@ -15,7 +15,9 @@ export const getDolarBlueValues = async ( req: Request, res: Response ) => {
 
 
   if ( req.redisClient ) {
+    await req.redisClient.connect();
     await req.redisClient.set( 'infoDolars', JSON.stringify( [ dolarHoy, ambitoFinanciero, cronista ] ), { EX: 60 } );
+    await req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
     console.log( 'Data saved success' );
   }
 

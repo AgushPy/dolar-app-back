@@ -12,7 +12,7 @@ export const getDolarBlue = async ( req: Request, res: Response ) => {
       console.log('El resultado de redis fue',getResultDolars)
       if ( getResultDolars ) {
 
-        req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
+        await req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
         res.json( JSON.parse( getResultDolars ) );
 
         return;
@@ -22,10 +22,6 @@ export const getDolarBlue = async ( req: Request, res: Response ) => {
 
     // Llamada al servicio de scraping para obtener el valor del dólar
     const dolarValue: Dolar[] = await getDolarBlueValues(req, res);
-
-    if ( req.redisClient ) {
-      req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
-    }
     
     res.json( dolarValue );
     return;

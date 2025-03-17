@@ -18,16 +18,13 @@ const getDolarBlue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             const getResultDolars = yield req.redisClient.get('infoDolars');
             console.log('El resultado de redis fue', getResultDolars);
             if (getResultDolars) {
-                req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
+                yield req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
                 res.json(JSON.parse(getResultDolars));
                 return;
             }
         }
         // Llamada al servicio de scraping para obtener el valor del dólar
         const dolarValue = yield (0, scraperService_1.getDolarBlueValues)(req, res);
-        if (req.redisClient) {
-            req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
-        }
         res.json(dolarValue);
         return;
     }
