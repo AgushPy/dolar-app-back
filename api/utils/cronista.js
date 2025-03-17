@@ -23,7 +23,8 @@ const getCronista = () => __awaiter(void 0, void 0, void 0, function* () {
         const browser = yield puppeteer_1.default.launch({
             executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
             headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            protocolTimeout: 180000
         });
         const page = yield browser.newPage();
         yield page.goto(URL, { waitUntil: 'domcontentloaded' });
