@@ -7,6 +7,7 @@ export default async function handler(req: Request, res : Response) {
   try {
     console.log('Ejecutando scraping del dólar blue...');
     req.redisClient = await getRedisClient();
+    req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
     await getDolarBlueValues(req, res);
     res.status(200).json({ message: 'Scraping ejecutado exitosamente.' });
   } catch (error) {

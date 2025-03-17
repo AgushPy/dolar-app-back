@@ -17,6 +17,7 @@ function handler(req, res) {
         try {
             console.log('Ejecutando scraping del dólar blue...');
             req.redisClient = yield (0, redisMiddleware_1.getRedisClient)();
+            req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
             yield (0, scraperService_1.getDolarBlueValues)(req, res);
             res.status(200).json({ message: 'Scraping ejecutado exitosamente.' });
         }

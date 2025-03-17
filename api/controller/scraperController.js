@@ -16,6 +16,7 @@ const getDolarBlue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         if (req.redisClient) {
             const getResultDolars = yield req.redisClient.get('infoDolars');
+            req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
             console.log('El resultado de redis fue', getResultDolars);
             if (getResultDolars) {
                 res.json(JSON.parse(getResultDolars));
@@ -38,6 +39,7 @@ const getAverage = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         let getResultDolars;
         if (req.redisClient) {
             getResultDolars = JSON.parse((yield req.redisClient.get('infoDolars')) || '{}');
+            req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
         }
         else {
             getResultDolars = yield (0, scraperService_1.getDolarBlueValues)(req, res);
@@ -55,6 +57,7 @@ const getSlippage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         let getResultDolars;
         if (req.redisClient) {
             getResultDolars = JSON.parse((yield req.redisClient.get('infoDolars')) || '{}');
+            req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
         }
         else {
             getResultDolars = yield (0, scraperService_1.getDolarBlueValues)(req, res);
