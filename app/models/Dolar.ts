@@ -7,4 +7,6 @@ export class Dolar{
   variation : string
 
   source : string
+
+  sourcePlainText : string
 }
