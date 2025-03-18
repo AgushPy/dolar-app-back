@@ -26,6 +26,12 @@ node_cron_1.default.schedule('*/3 * * * *', () => __awaiter(void 0, void 0, void
             json: (data) => console.log(`Response Status ${code}:`, data),
         }),
     };
+    const getResultDolars = yield redisClient.get('infoDolars');
+    console.log('El resultado de redis fue', getResultDolars);
+    if (getResultDolars) {
+        yield redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
+        return;
+    }
     console.log('Starting cron execution');
     yield (0, scraperService_1.getDolarBlueValues)(req, res);
     console.log('Finish cron execution');

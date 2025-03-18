@@ -22,8 +22,12 @@ const getDolarHoy = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const browser = yield puppeteer_1.default.launch({
             executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            headless: "shell",
+            args: ["--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-accelerated-2d-canvas",
+                "--disable-gpu"],
             protocolTimeout: 180000
         });
         const page = yield browser.newPage();
