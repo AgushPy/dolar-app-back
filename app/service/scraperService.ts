@@ -7,6 +7,19 @@ import { Request, Response } from 'express';
 
 export const getDolarBlueValues = async ( req: Request, res: Response ) => {
 
+  if ( req.redisClient ) {
+    const getResultDolars = await req.redisClient.get( 'infoDolars' );
+
+    console.log( 'El resultado de redis fue', getResultDolars );
+    if ( getResultDolars ) {
+
+      await req.redisClient.quit().then( () => console.log( "Conexión Redis cerrada" ) );
+
+      return JSON.parse( getResultDolars );
+    }
+
+  }
+
   const dolarHoy = await getDolarHoy();
   const ambitoFinanciero = await getAmbitoFinanciero();
   const cronista = await getCronista();

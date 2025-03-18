@@ -18,8 +18,12 @@ export const getAmbitoFinanciero = async () => {
   try {
     const browser = await puppeteer.launch({
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-      headless: true,
-      args: [ '--no-sandbox', '--disable-setuid-sandbox' ],
+      headless: "shell",
+      args: [ "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-accelerated-2d-canvas",
+            "--disable-gpu" ],
       protocolTimeout: 180000 
     });
     const page = await browser.newPage();

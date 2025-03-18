@@ -14,6 +14,14 @@ const ambitoFinanciero_1 = require("../utils/ambitoFinanciero");
 const cronista_1 = require("../utils/cronista");
 const dolarHoy_1 = require("../utils/dolarHoy");
 const getDolarBlueValues = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.redisClient) {
+        const getResultDolars = yield req.redisClient.get('infoDolars');
+        console.log('El resultado de redis fue', getResultDolars);
+        if (getResultDolars) {
+            yield req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
+            return JSON.parse(getResultDolars);
+        }
+    }
     const dolarHoy = yield (0, dolarHoy_1.getDolarHoy)();
     const ambitoFinanciero = yield (0, ambitoFinanciero_1.getAmbitoFinanciero)();
     const cronista = yield (0, cronista_1.getCronista)();
