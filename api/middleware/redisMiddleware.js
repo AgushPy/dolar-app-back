@@ -33,7 +33,6 @@ function getRedisClient() {
         return redisClient;
     });
 }
-// Middleware para inicializar Redis en cada solicitud
 function redisMiddleware(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

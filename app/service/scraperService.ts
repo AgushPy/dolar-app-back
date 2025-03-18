@@ -5,7 +5,6 @@ import { getCronista } from '../utils/cronista';
 import { getDolarHoy } from '../utils/dolarHoy';
 import { Request, Response } from 'express';
 
-// Función que hace scraping del valor del dólar blue
 export const getDolarBlueValues = async ( req: Request, res: Response ) => {
 
   const dolarHoy = await getDolarHoy();

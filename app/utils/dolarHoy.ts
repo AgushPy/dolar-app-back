@@ -53,9 +53,6 @@ export const getDolarHoy = async () => {
     } );
 
     await browser.close();
-    console.log( valueCompra );
-    console.log( valueVenta );
-    console.log( variation );
 
     const dolar = new Dolar();
     dolar.buyPrice = valueCompra || '';
@@ -63,7 +60,6 @@ export const getDolarHoy = async () => {
     dolar.variation = variation || '';
     dolar.source = URL;
     dolar.sourcePlainText = 'Dolar Hoy';
-    // dolar.buyPrice = valueCompra;
 
 
     return dolar;

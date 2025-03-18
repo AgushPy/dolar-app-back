@@ -3,7 +3,6 @@ import { getDolarBlueValues } from './service/scraperService';
 import { Request, request, Response, response } from 'express';
 import { getRedisClient } from './middleware/redisMiddleware';
 
-// Ejecutar la función cada 45 segundos
 cron.schedule('*/3 * * * *', async () => {
   const redisClient = await getRedisClient();
   const req = {

@@ -21,7 +21,6 @@ export async function getRedisClient() {
   return redisClient;
 }
 
-// Middleware para inicializar Redis en cada solicitud
 export async function redisMiddleware( req: Request, res: Response, next: NextFunction ) {
   try {
     const redisClient = await getRedisClient();

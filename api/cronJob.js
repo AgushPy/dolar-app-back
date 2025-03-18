@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_cron_1 = __importDefault(require("node-cron"));
 const scraperService_1 = require("./service/scraperService");
 const redisMiddleware_1 = require("./middleware/redisMiddleware");
-// Ejecutar la función cada 45 segundos
 node_cron_1.default.schedule('*/3 * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
     const redisClient = yield (0, redisMiddleware_1.getRedisClient)();
     const req = {

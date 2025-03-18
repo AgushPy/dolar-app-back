@@ -13,7 +13,6 @@ exports.getDolarSlippage = exports.getDolarAverage = exports.getDolarBlueValues 
 const ambitoFinanciero_1 = require("../utils/ambitoFinanciero");
 const cronista_1 = require("../utils/cronista");
 const dolarHoy_1 = require("../utils/dolarHoy");
-// Función que hace scraping del valor del dólar blue
 const getDolarBlueValues = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const dolarHoy = yield (0, dolarHoy_1.getDolarHoy)();
     const ambitoFinanciero = yield (0, ambitoFinanciero_1.getAmbitoFinanciero)();
