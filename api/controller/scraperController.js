@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSlippage = exports.getAverage = exports.getDolarBlue = void 0;
+exports.getSlippage = exports.getAverage = exports.getDolarBlueHistorical = exports.getDolarBlue = void 0;
 const scraperService_1 = require("../service/scraperService");
 const async_1 = __importDefault(require("async"));
 const queue = async_1.default.queue((task, callback) => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,6 +33,21 @@ const getDolarBlue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getDolarBlue = getDolarBlue;
+const getDolarBlueHistorical = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (req.redisClient) {
+            const getResultDolarsHistorical = JSON.parse((yield req.redisClient.get('infoDolarsHistorical')) || '{}');
+            res.json({ dolarHistorical: getResultDolarsHistorical });
+            return;
+        }
+        res.json({ dolarHistorical: [] });
+        return;
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Error to get usd pricing historical' });
+    }
+});
+exports.getDolarBlueHistorical = getDolarBlueHistorical;
 const getAverage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let getResultDolars;

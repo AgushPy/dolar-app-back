@@ -4,6 +4,7 @@ import { getAmbitoFinanciero } from '../utils/ambitoFinanciero';
 import { getCronista } from '../utils/cronista';
 import { getDolarHoy } from '../utils/dolarHoy';
 import { Request, Response } from 'express';
+import { DolarHistorical } from '../models/DolarHistorical';
 
 export const getDolarBlueValues = async ( req: Request, res: Response ) => {
 
@@ -24,10 +25,25 @@ export const getDolarBlueValues = async ( req: Request, res: Response ) => {
   const ambitoFinanciero = await getAmbitoFinanciero();
   const cronista = await getCronista();
 
+  const hoy = new Intl.DateTimeFormat('es-AR', {
+    timeZone: 'America/Argentina/Buenos_Aires',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }).format(new Date());
+
+  const dolarHoyHistorical : DolarHistorical = {...dolarHoy, hour: hoy}
+  const ambitoFinancieroHistorical : DolarHistorical = {...ambitoFinanciero, hour: hoy}
+  const cronistaHistorical : DolarHistorical = {...cronista, hour: hoy}
+
 
 
   if ( req.redisClient ) {
     await req.redisClient.set( 'infoDolars', JSON.stringify( [ dolarHoy, ambitoFinanciero, cronista ] ), { EX: 60 } );
+    await req.redisClient.set( 'infoDolarsHistorical', JSON.stringify( [ dolarHoyHistorical, ambitoFinancieroHistorical, cronistaHistorical ] ), { EX: 240 } );
     await req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
     console.log( 'Data saved success' );
   }

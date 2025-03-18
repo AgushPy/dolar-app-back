@@ -10,6 +10,7 @@ const createScraperRoutes = () => {
     const scraperRoutes = express_1.default.Router();
     scraperRoutes.use(redisMiddleware_1.redisMiddleware);
     scraperRoutes.get('/dolar', scraperController_1.getDolarBlue);
+    scraperRoutes.get('/dolarHistorical', scraperController_1.getDolarBlueHistorical);
     scraperRoutes.get('/average', scraperController_1.getAverage);
     scraperRoutes.get('/slippage', scraperController_1.getSlippage);
     return scraperRoutes;

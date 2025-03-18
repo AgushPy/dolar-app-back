@@ -25,8 +25,21 @@ const getDolarBlueValues = (req, res) => __awaiter(void 0, void 0, void 0, funct
     const dolarHoy = yield (0, dolarHoy_1.getDolarHoy)();
     const ambitoFinanciero = yield (0, ambitoFinanciero_1.getAmbitoFinanciero)();
     const cronista = yield (0, cronista_1.getCronista)();
+    const hoy = new Intl.DateTimeFormat('es-AR', {
+        timeZone: 'America/Argentina/Buenos_Aires',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+    }).format(new Date());
+    const dolarHoyHistorical = Object.assign(Object.assign({}, dolarHoy), { hour: hoy });
+    const ambitoFinancieroHistorical = Object.assign(Object.assign({}, ambitoFinanciero), { hour: hoy });
+    const cronistaHistorical = Object.assign(Object.assign({}, cronista), { hour: hoy });
     if (req.redisClient) {
         yield req.redisClient.set('infoDolars', JSON.stringify([dolarHoy, ambitoFinanciero, cronista]), { EX: 60 });
+        yield req.redisClient.set('infoDolarsHistorical', JSON.stringify([dolarHoyHistorical, ambitoFinancieroHistorical, cronistaHistorical]), { EX: 240 });
         yield req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
         console.log('Data saved success');
     }
