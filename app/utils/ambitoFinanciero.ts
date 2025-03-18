@@ -59,7 +59,6 @@ export const getAmbitoFinanciero = async () => {
     dolar.variation = variation || '';
     dolar.source = URL;
     dolar.sourcePlainText = 'Ambito financiero';
-    // dolar.buyPrice = valueCompra;
 
     return dolar;
 

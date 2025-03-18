@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { Dolar } from '../models/Dolar';
 import { getDolarAverage, getDolarBlueValues, getDolarSlippage } from '../service/scraperService';
 
-// Función que maneja la solicitud de obtener el valor del dólar blue
 export const getDolarBlue = async ( req: Request, res: Response ) => {
   try {
 
@@ -20,7 +19,6 @@ export const getDolarBlue = async ( req: Request, res: Response ) => {
 
     }
 
-    // Llamada al servicio de scraping para obtener el valor del dólar
     const dolarValue: Dolar[] = await getDolarBlueValues(req, res);
     
     res.json( dolarValue );

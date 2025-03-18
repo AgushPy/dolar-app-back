@@ -44,16 +44,12 @@ const getDolarHoy = () => __awaiter(void 0, void 0, void 0, function* () {
             return element ? (_a = element.textContent) === null || _a === void 0 ? void 0 : _a.trim() : null;
         });
         yield browser.close();
-        console.log(valueCompra);
-        console.log(valueVenta);
-        console.log(variation);
         const dolar = new Dolar_1.Dolar();
         dolar.buyPrice = valueCompra || '';
         dolar.sellPrice = valueVenta || '';
         dolar.variation = variation || '';
         dolar.source = URL;
         dolar.sourcePlainText = 'Dolar Hoy';
-        // dolar.buyPrice = valueCompra;
         return dolar;
     }
     catch (err) {

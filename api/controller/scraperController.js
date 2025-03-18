@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSlippage = exports.getAverage = exports.getDolarBlue = void 0;
 const scraperService_1 = require("../service/scraperService");
-// Función que maneja la solicitud de obtener el valor del dólar blue
 const getDolarBlue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (req.redisClient) {
@@ -23,7 +22,6 @@ const getDolarBlue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 return;
             }
         }
-        // Llamada al servicio de scraping para obtener el valor del dólar
         const dolarValue = yield (0, scraperService_1.getDolarBlueValues)(req, res);
         res.json(dolarValue);
         return;

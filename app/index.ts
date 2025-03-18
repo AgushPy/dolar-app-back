@@ -10,9 +10,9 @@ app.use( express.json() );
 const scraperRoutes = createScraperRoutes();
 
 const corsOptions = {
-  origin: 'https://dolar-app-front.vercel.app',  // Permitir solo este dominio
-  methods: ['GET', 'POST'],         // Permitir solo ciertos métodos
-  allowedHeaders: ['Content-Type', 'Authorization'], // Permitir ciertos encabezados
+  origin: 'https://dolar-app-front.vercel.app',  
+  methods: ['GET', 'POST'],         
+  allowedHeaders: ['Content-Type', 'Authorization'], 
 };
 
 app.use(cors(corsOptions));

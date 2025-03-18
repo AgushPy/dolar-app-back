@@ -58,7 +58,6 @@ const getAmbitoFinanciero = () => __awaiter(void 0, void 0, void 0, function* ()
         dolar.variation = variation || '';
         dolar.source = URL;
         dolar.sourcePlainText = 'Ambito financiero';
-        // dolar.buyPrice = valueCompra;
         return dolar;
     }
     catch (err) {
