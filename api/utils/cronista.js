@@ -50,6 +50,7 @@ const getCronista = () => __awaiter(void 0, void 0, void 0, function* () {
         dolar.sellPrice = valueVenta || '';
         dolar.variation = variation || '';
         dolar.source = URL;
+        dolar.sourcePlainText = 'Cronista';
         return dolar;
     }
     catch (err) {

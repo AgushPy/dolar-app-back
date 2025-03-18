@@ -52,6 +52,7 @@ const getDolarHoy = () => __awaiter(void 0, void 0, void 0, function* () {
         dolar.sellPrice = valueVenta || '';
         dolar.variation = variation || '';
         dolar.source = URL;
+        dolar.sourcePlainText = 'Dolar Hoy';
         // dolar.buyPrice = valueCompra;
         return dolar;
     }

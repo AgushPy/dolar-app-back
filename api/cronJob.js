@@ -8,22 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = handler;
-const scraperService_1 = require("./service/scraperService"); // O la ruta correcta de tu función
+const node_cron_1 = __importDefault(require("node-cron"));
+const scraperService_1 = require("./service/scraperService");
 const redisMiddleware_1 = require("./middleware/redisMiddleware");
-function handler(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            console.log('Ejecutando scraping del dólar blue...');
-            req.redisClient = yield (0, redisMiddleware_1.getRedisClient)();
-            req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
-            yield (0, scraperService_1.getDolarBlueValues)(req, res);
-            res.status(200).json({ message: 'Scraping ejecutado exitosamente.' });
-        }
-        catch (error) {
-            console.error('Error ejecutando el scraping:', error);
-            res.status(500).json({ message: 'Hubo un error al ejecutar el scraping.' });
-        }
-    });
-}
+// Ejecutar la función cada 45 segundos
+node_cron_1.default.schedule('*/3 * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+    const redisClient = yield (0, redisMiddleware_1.getRedisClient)();
+    const req = {
+        redisClient,
+    };
+    const res = {
+        json: (data) => console.log('Response JSON:', data),
+        status: (code) => ({
+            json: (data) => console.log(`Response Status ${code}:`, data),
+        }),
+    };
+    console.log('Starting cron execution');
+    yield (0, scraperService_1.getDolarBlueValues)(req, res);
+    console.log('Finish cron execution');
+}));

@@ -41,6 +41,7 @@ export const getCronista = async() => {
     dolar.sellPrice = valueVenta || '';
     dolar.variation = variation || '';
     dolar.source = URL;
+    dolar.sourcePlainText = 'Cronista';
 
     return dolar;
   }catch(err){

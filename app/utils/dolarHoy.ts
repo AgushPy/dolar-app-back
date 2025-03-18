@@ -62,6 +62,7 @@ export const getDolarHoy = async () => {
     dolar.sellPrice = valueVenta || '';
     dolar.variation = variation || '';
     dolar.source = URL;
+    dolar.sourcePlainText = 'Dolar Hoy';
     // dolar.buyPrice = valueCompra;
 
 
