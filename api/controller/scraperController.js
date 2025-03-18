@@ -8,22 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSlippage = exports.getAverage = exports.getDolarBlue = void 0;
 const scraperService_1 = require("../service/scraperService");
+const async_1 = __importDefault(require("async"));
+const queue = async_1.default.queue((task, callback) => __awaiter(void 0, void 0, void 0, function* () {
+    yield task();
+    callback();
+}), 1);
 const getDolarBlue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (req.redisClient) {
-            const getResultDolars = yield req.redisClient.get('infoDolars');
-            console.log('El resultado de redis fue', getResultDolars);
-            if (getResultDolars) {
-                yield req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
-                res.json(JSON.parse(getResultDolars));
-                return;
-            }
-        }
-        const dolarValue = yield (0, scraperService_1.getDolarBlueValues)(req, res);
-        res.json(dolarValue);
+        queue.push(() => __awaiter(void 0, void 0, void 0, function* () {
+            const dolarValue = yield (0, scraperService_1.getDolarBlueValues)(req, res);
+            res.json({ dolar: dolarValue });
+        }));
         return;
     }
     catch (error) {

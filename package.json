@@ -20,6 +20,7 @@
   "description": "",
   "devDependencies": {
     "@babel/preset-typescript": "^7.26.0",
+    "@types/async": "^3.2.24",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
@@ -27,6 +28,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "async": "^3.2.6",
     "axios": "^1.8.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

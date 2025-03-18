@@ -1,27 +1,21 @@
 import { Request, Response } from 'express';
 import { Dolar } from '../models/Dolar';
 import { getDolarAverage, getDolarBlueValues, getDolarSlippage } from '../service/scraperService';
+import async from 'async';
+
+type Task = () => Promise<void>;
+
+const queue = async.queue<Task>( async ( task, callback ) => {
+  await task();
+  callback();
+}, 1 );
 
 export const getDolarBlue = async ( req: Request, res: Response ) => {
   try {
-
-    if ( req.redisClient ) {
-      const getResultDolars = await req.redisClient.get( 'infoDolars' );
-
-      console.log('El resultado de redis fue',getResultDolars)
-      if ( getResultDolars ) {
-
-        await req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
-        res.json( JSON.parse( getResultDolars ) );
-
-        return;
-      }
-
-    }
-
-    const dolarValue: Dolar[] = await getDolarBlueValues(req, res);
-    
-    res.json( dolarValue );
+    queue.push( async () => {
+      const dolarValue = await getDolarBlueValues( req, res );
+      res.json( { dolar: dolarValue } );
+    } );
     return;
   } catch ( error ) {
     console.error( 'Error en scraper:', error );
@@ -35,13 +29,13 @@ export const getAverage = async ( req: Request, res: Response ) => {
     if ( req.redisClient ) {
       getResultDolars = JSON.parse( await req.redisClient.get( 'infoDolars' ) || '{}' );
     } else {
-      getResultDolars = await getDolarBlueValues(req, res);
+      getResultDolars = await getDolarBlueValues( req, res );
     }
 
     const average = await getDolarAverage( req, res, getResultDolars );
 
     if ( req.redisClient ) {
-      req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
+      req.redisClient.quit().then( () => console.log( "Conexión Redis cerrada" ) );
     }
 
     res.json( average );
@@ -57,13 +51,13 @@ export const getSlippage = async ( req: Request, res: Response ) => {
       getResultDolars = JSON.parse( await req.redisClient.get( 'infoDolars' ) || '{}' );
     }
     else {
-      getResultDolars = await getDolarBlueValues(req, res);
+      getResultDolars = await getDolarBlueValues( req, res );
     }
 
-    const slippage = await getDolarSlippage( req, res , getResultDolars );
+    const slippage = await getDolarSlippage( req, res, getResultDolars );
 
     if ( req.redisClient ) {
-      req.redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
+      req.redisClient.quit().then( () => console.log( "Conexión Redis cerrada" ) );
     }
 
     res.json( slippage );
