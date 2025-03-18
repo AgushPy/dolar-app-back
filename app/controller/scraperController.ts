@@ -23,6 +23,20 @@ export const getDolarBlue = async ( req: Request, res: Response ) => {
   }
 };
 
+export const getDolarBlueHistorical = async ( req: Request, res: Response ) => {
+  try {
+    if ( req.redisClient ) {
+      const getResultDolarsHistorical = JSON.parse( await req.redisClient.get( 'infoDolarsHistorical' ) || '{}' );
+      res.json( { dolarHistorical: getResultDolarsHistorical } );
+      return;
+    }
+    res.json( { dolarHistorical: [] } );
+    return;
+  } catch ( error ) {
+    res.status( 500 ).json( { error: 'Error to get usd pricing historical' } );
+  }
+};
+
 export const getAverage = async ( req: Request, res: Response ) => {
   try {
     let getResultDolars: Dolar[];

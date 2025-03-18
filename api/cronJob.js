@@ -12,14 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.runScraper = void 0;
 const node_cron_1 = __importDefault(require("node-cron"));
 const scraperService_1 = require("./service/scraperService");
 const redisMiddleware_1 = require("./middleware/redisMiddleware");
-node_cron_1.default.schedule('*/3 * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+const runScraper = () => __awaiter(void 0, void 0, void 0, function* () {
     const redisClient = yield (0, redisMiddleware_1.getRedisClient)();
-    const req = {
-        redisClient,
-    };
+    const req = { redisClient };
     const res = {
         json: (data) => console.log('Response JSON:', data),
         status: (code) => ({
@@ -32,7 +31,12 @@ node_cron_1.default.schedule('*/3 * * * *', () => __awaiter(void 0, void 0, void
         yield redisClient.quit().then(() => console.log("Conexión Redis cerrada"));
         return;
     }
-    console.log('Starting cron execution');
+    console.log('Starting scraper execution');
     yield (0, scraperService_1.getDolarBlueValues)(req, res);
-    console.log('Finish cron execution');
+    console.log('Finish scraper execution');
+});
+exports.runScraper = runScraper;
+node_cron_1.default.schedule('*/3 * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('Cron ejecutado');
+    yield (0, exports.runScraper)();
 }));

@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { getAverage, getDolarBlue, getSlippage } from '../controller/scraperController';
+import { getAverage, getDolarBlue, getDolarBlueHistorical, getSlippage } from '../controller/scraperController';
 import { redisMiddleware } from '../middleware/redisMiddleware';
 
 const createScraperRoutes = () => {
@@ -10,6 +10,7 @@ const createScraperRoutes = () => {
   scraperRoutes.use(redisMiddleware);
 
   scraperRoutes.get( '/dolar', getDolarBlue );
+  scraperRoutes.get( '/dolarHistorical', getDolarBlueHistorical );
   scraperRoutes.get( '/average', getAverage );
   scraperRoutes.get( '/slippage', getSlippage );
 
